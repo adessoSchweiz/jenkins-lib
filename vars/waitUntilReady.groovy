@@ -1,11 +1,14 @@
 #!/usr/bin/env groovy
 
-def call(String label, String containerName, String version) {
+def call(String label,
+         String containerName,
+         String version,
+         String namespace) {
     def podVersion = ''
     container('kubectl') {
         while (podVersion != version) {
             def pods = sh(
-                    script: "kubectl -n test get po -l ${label} --field-selector=status.phase=Running --no-headers",
+                    script: "kubectl -n ${namespace} get po -l ${label} --field-selector=status.phase=Running --no-headers",
                     returnStdout: true
             ).trim()
             def podNameLine = pods.split('\n')[0]
