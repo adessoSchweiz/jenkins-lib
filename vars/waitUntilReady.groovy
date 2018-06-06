@@ -19,7 +19,7 @@ def call(String label,
             def podName = podNameLine.substring(0, startIndex)
             try {
                 def versionString = sh(
-                        script: "kubectl -n test exec ${podName} -c ${containerName} env | grep ^VERSION=",
+                        script: "kubectl -n ${namespace} exec ${podName} -c ${containerName} env | grep ^VERSION=",
                         returnStdout: true
                 ).trim()
                 podVersion = versionString.split('=')[1]
