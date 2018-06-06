@@ -7,9 +7,8 @@ def call(String userName, String repositoryName) {
     ).trim()
     def data = readJSON text: "${latestReleaseJson}"
 
-    echo "data: ${data}"
     def commitHistoryText
-    if (data == null) {
+    if (data.tag_name == null) {
         commitHistoryText = sh(
                 script: "git log HEAD --oneline",
                 returnStdout: true
