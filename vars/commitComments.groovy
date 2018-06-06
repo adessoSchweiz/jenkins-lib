@@ -7,10 +7,21 @@ def call(String userName, String repositoryName) {
     ).trim()
     def data = readJSON text: "${latestReleaseJson}"
 
-    def commitHistoryText = sh(
-            script: "git log ${data.tag_name}..HEAD --oneline",
-            returnStdout: true
-    ).trim()
+    echo "data: ${data}"
+    def commitHistoryText
+    if (data == null) {
+        commitHistoryText = sh(
+                script: "git log HEAD --oneline",
+                returnStdout: true
+        ).trim()
+    } else {
+        commitHistoryText = sh(
+                script: "git log ${data.tag_name}..HEAD --oneline",
+                returnStdout: true
+        ).trim()
+    }
+
+
 
     def allComments = []
     def array = commitHistoryText.split('\n')
